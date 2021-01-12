@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "module": "esnext",
+        "lib": ["esnext"],
+        "rootDir": "src",
+        "outDir": "dist",
+        "strict": true,
+        "sourceMap": true,
+        "declaration": true,
+        "moduleResolution": "node",
+        "importHelpers": true,
+        "jsx": "react",
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true
+    },
+    "exclude": ["dist", "tests", "node_modules"]
+}
