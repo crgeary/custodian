@@ -8,7 +8,13 @@ import {
 
 import { response } from './response';
 
-const custodian = (cb: APIGatewayProxyHandlerV2): APIGatewayProxyHandlerV2 => {
+interface CustodianAPIGatewayProxyCallback {
+    (event: APIGatewayProxyEventV2, context: Context, callback: Callback):
+        | Promise<APIGatewayProxyResultV2>
+        | Record<string, any>;
+}
+
+const custodian = (cb: CustodianAPIGatewayProxyCallback): APIGatewayProxyHandlerV2 => {
     return async (
         event: APIGatewayProxyEventV2,
         context: Context,
@@ -17,7 +23,6 @@ const custodian = (cb: APIGatewayProxyHandlerV2): APIGatewayProxyHandlerV2 => {
         try {
             return response(200, await cb(event, context, callback));
         } catch (err) {
-            console.error(err);
             return response(500, {
                 message: err.message,
             });
