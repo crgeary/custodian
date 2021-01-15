@@ -6,11 +6,11 @@ import {
     APIGatewayProxyResultV2,
 } from 'aws-lambda';
 
-import { response } from './response';
+import { response, ResponseInterface, ResponseObject } from './response';
 
 interface CustodianAPIGatewayProxyCallback {
     (event: APIGatewayProxyEventV2, context: Context, callback: Callback):
-        | Promise<APIGatewayProxyResultV2>
+        | Promise<ResponseInterface>
         | Record<string, any>;
 }
 
@@ -21,7 +21,11 @@ const custodian = (cb: CustodianAPIGatewayProxyCallback): APIGatewayProxyHandler
         callback: Callback
     ): Promise<APIGatewayProxyResultV2> => {
         try {
-            return response(200, await cb(event, context, callback));
+            let r = await cb(event, context, callback);
+            if (!(r instanceof ResponseObject)) {
+                r = response(200, r);
+            }
+            return r.send();
         } catch (err) {
             return response(500, {
                 message: err.message,
@@ -31,3 +35,4 @@ const custodian = (cb: CustodianAPIGatewayProxyCallback): APIGatewayProxyHandler
 };
 
 export default custodian;
+export { response, ResponseObject };
