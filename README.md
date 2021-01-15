@@ -73,6 +73,35 @@ Output:
 }
 ```
 
+### Errors
+
+Input:
+
+```js
+import { custodian, NotFoundError } from '@crgeary/custodian';
+
+export const handler = custodian(() => {
+    throw new NotFoundError('The resource could not be found.');
+    return {
+        message: 'Hello, World!',
+    };
+});
+```
+
+Output:
+
+```js
+{
+    isBase64Encoded: false,
+    statusCode: 404,
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: '{ "message": "The resource could not be found." }',
+    cookies: [],
+}
+```
+
 ## License
 
 Licensed under the [MIT License](./LICENSE).
