@@ -22,6 +22,10 @@ export class ResponseObject implements ResponseInterface {
     send(): APIGatewayProxyStructuredResultV2 {
         return Object.assign({}, this, {
             body: typeof this.body !== 'string' ? JSON.stringify(this.body) : '',
+            headers: {
+                'Content-Type': 'application/json',
+                ...this.headers,
+            },
         });
     }
 }
