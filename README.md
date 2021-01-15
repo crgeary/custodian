@@ -40,6 +40,8 @@ Output:
 
 ### Custom Status Codes
 
+Input:
+
 ```js
 import { custodian, response } from '@crgeary/custodian';
 
