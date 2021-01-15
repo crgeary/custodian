@@ -7,6 +7,14 @@ import {
 } from 'aws-lambda';
 
 import { response, ResponseInterface, ResponseObject } from './response';
+import {
+    BaseError,
+    BadRequestError,
+    UnauthorizedError,
+    ForbiddenError,
+    NotFoundError,
+    InternalServerError,
+} from './errors';
 
 interface CustodianAPIGatewayProxyCallback {
     (event: APIGatewayProxyEventV2, context: Context, callback: Callback):
@@ -27,12 +35,23 @@ const custodian = (cb: CustodianAPIGatewayProxyCallback): APIGatewayProxyHandler
             }
             return r.send();
         } catch (err) {
-            return response(500, {
-                message: err.message,
-            });
+            let statusCode = 500;
+            if (err.isCustodianError) {
+                statusCode = err.statusCode;
+            }
+            return response(statusCode, { message: err.message }).send();
         }
     };
 };
 
 export default custodian;
-export { response, ResponseObject };
+export {
+    response,
+    ResponseObject,
+    BaseError,
+    BadRequestError,
+    UnauthorizedError,
+    ForbiddenError,
+    NotFoundError,
+    InternalServerError,
+};
