@@ -20,7 +20,9 @@ export class ResponseObject implements ResponseInterface {
         this.cookies = cookies;
     }
     send(): APIGatewayProxyStructuredResultV2 {
-        return Object.assign({}, this);
+        return Object.assign({}, this, {
+            body: typeof this.body !== 'string' ? JSON.stringify(this.body) : '',
+        });
     }
 }
 
