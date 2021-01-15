@@ -8,6 +8,13 @@ A library for building AWS Lambda APIs.
 npm i @crgeary/custodian
 ```
 
+## Todo
+
+-   [x] Generic Responses
+-   [ ] Error Handler
+-   [ ] Middleware
+-   [ ] Tests
+
 ## Usage
 
 ### Basic Example
