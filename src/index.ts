@@ -44,8 +44,8 @@ const custodian = (cb: CustodianAPIGatewayProxyCallback): APIGatewayProxyHandler
     };
 };
 
-export default custodian;
 export {
+    custodian,
     response,
     ResponseObject,
     BaseError,
