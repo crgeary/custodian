@@ -1,6 +1,6 @@
 # Custodian
 
-A library for building AWS Lambda APIs.
+A library for building APIs with AWS Lambda & API Gateway.
 
 ## Install
 
@@ -11,7 +11,7 @@ npm i @crgeary/custodian
 ## Todo
 
 -   [x] Generic Responses
--   [ ] Error Handler
+-   [x] Error Handler
 -   [ ] Middleware
 -   [ ] Tests
 
