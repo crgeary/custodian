@@ -1,7 +1,8 @@
 {
     "compilerOptions": {
-        "module": "esnext",
-        "lib": ["esnext"],
+        "module": "commonjs",
+        "target": "es2019",
+        "lib": ["es2020"],
         "rootDir": "src",
         "outDir": "dist",
         "strict": true,
@@ -14,5 +15,6 @@
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true
     },
-    "exclude": ["dist", "tests", "node_modules"]
+    "include": ["src/**/*.ts"],
+    "exclude": ["dist", "node_modules"]
 }
