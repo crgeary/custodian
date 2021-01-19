@@ -1,6 +1,6 @@
 import { APIGatewayProxyStructuredResultV2 } from 'aws-lambda';
 
-export class ResponseObject implements ResponseInterface {
+export class ResponseObject {
     public isBase64Encoded;
     public statusCode;
     public body;
@@ -20,21 +20,11 @@ export class ResponseObject implements ResponseInterface {
         this.cookies = cookies;
     }
     send(): APIGatewayProxyStructuredResultV2 {
-        return Object.assign({}, this, {
-            body: typeof this.body !== 'string' ? JSON.stringify(this.body) : '',
-            headers: {
-                'Content-Type': 'application/json',
-                ...this.headers,
-            },
-        });
+        return Object.assign({}, this);
     }
 }
 
-export interface ResponseInterface extends APIGatewayProxyStructuredResultV2 {
-    send(): APIGatewayProxyStructuredResultV2;
-}
-
-export const response = (statusCode = 200, body: any = '', otherProperties = {}): ResponseInterface => {
+export const response = (statusCode = 200, body: any = '', otherProperties = {}): ResponseObject => {
     return new ResponseObject({
         ...otherProperties,
         statusCode,
