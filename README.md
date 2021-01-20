@@ -15,7 +15,7 @@ npm i @crgeary/custodian
 -   [ ] Middleware
 -   [ ] Tests
 
-## Usage
+## Functions
 
 ### Basic Example
 
@@ -100,6 +100,31 @@ Output:
     body: '{ "message": "The resource could not be found." }',
     cookies: [],
 }
+```
+
+## Middleware
+
+Custodian will apply a set of default middleware useful for building JSON responses.
+
+To add custom middleware, simply supply an array of `middleware` to Custodian.
+
+```js
+import { custodian, defaultMiddleware } from '@crgeary/custodian';
+
+const AppendHeaderMiddleware = (res) => {
+    res.setHeader('X-Custom-Header', 'Hello, World!');
+};
+
+const middleware = [...defaultMiddleware, AppendHeaderMiddleware];
+
+export const handler = custodian(
+    () => {
+        return {
+            message: 'Hello, World!',
+        };
+    },
+    { middleware }
+);
 ```
 
 ## License
