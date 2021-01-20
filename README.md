@@ -8,13 +8,6 @@ A library for building APIs with AWS Lambda & API Gateway.
 npm i @crgeary/custodian
 ```
 
-## Todo
-
--   [x] Generic Responses
--   [x] Error Handler
--   [ ] Middleware
--   [ ] Tests
-
 ## Functions
 
 ### Basic Example
