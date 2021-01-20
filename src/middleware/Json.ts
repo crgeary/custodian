@@ -1,6 +1,17 @@
 import { ResponseObject } from '../response';
 
+const isJson = (str: string): boolean => {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+};
+
 export default (res: ResponseObject): void => {
-    res.headers = { ...res.headers, 'Content-Type': 'application/json' };
-    res.body = typeof res.body !== 'string' ? JSON.stringify(res.body) : '';
+    res.setHeader('Content-Type', 'application/json');
+    if (typeof res.body !== 'string' || !isJson(res.body)) {
+        res.body = JSON.stringify(res.body);
+    }
 };
