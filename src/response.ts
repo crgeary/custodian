@@ -1,6 +1,6 @@
 import { APIGatewayProxyStructuredResultV2 } from 'aws-lambda';
 
-export class ResponseObject implements ResponseInterface {
+export class ResponseObject {
     public isBase64Encoded;
     public statusCode;
     public body;
@@ -20,21 +20,27 @@ export class ResponseObject implements ResponseInterface {
         this.cookies = cookies;
     }
     send(): APIGatewayProxyStructuredResultV2 {
-        return Object.assign({}, this, {
-            body: typeof this.body !== 'string' ? JSON.stringify(this.body) : '',
-            headers: {
-                'Content-Type': 'application/json',
-                ...this.headers,
-            },
-        });
+        return Object.assign({}, this);
+    }
+    setHeader(name: string, value: string): void {
+        this.headers[name] = value;
+    }
+    removeHeader(name: string): boolean {
+        return delete this.headers[name];
+    }
+    getHeader(name: string): undefined | string | number | boolean {
+        return this.hasHeader(name) ? this.headers[name] : undefined;
+    }
+    hasHeader(name: string): boolean {
+        return name in this.headers;
+    }
+    getHeaders(): { [name: string]: boolean | number | string } {
+        return this.headers;
     }
 }
 
-export interface ResponseInterface extends APIGatewayProxyStructuredResultV2 {
-    send(): APIGatewayProxyStructuredResultV2;
-}
-
-export const response = (statusCode = 200, body: any = '', otherProperties = {}): ResponseInterface => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const response = (statusCode = 200, body: any = '', otherProperties = {}): ResponseObject => {
     return new ResponseObject({
         ...otherProperties,
         statusCode,

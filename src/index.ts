@@ -6,7 +6,8 @@ import {
     APIGatewayProxyResultV2,
 } from 'aws-lambda';
 
-import { response, ResponseInterface, ResponseObject } from './response';
+import { response, ResponseObject } from './response';
+import { runMiddleware, CustodianMiddleware, defaultMiddleware } from './middleware';
 import {
     BaseError,
     BadRequestError,
@@ -16,13 +17,17 @@ import {
     InternalServerError,
 } from './errors';
 
+interface CustodianOptions {
+    middleware?: Array<CustodianMiddleware>;
+}
+
 interface CustodianAPIGatewayProxyCallback {
     (event: APIGatewayProxyEventV2, context: Context, callback: Callback):
-        | Promise<ResponseInterface>
+        | Promise<ResponseObject>
         | Record<string, any>;
 }
 
-const custodian = (cb: CustodianAPIGatewayProxyCallback): APIGatewayProxyHandlerV2 => {
+const custodian = (cb: CustodianAPIGatewayProxyCallback, options: CustodianOptions = {}): APIGatewayProxyHandlerV2 => {
     return async (
         event: APIGatewayProxyEventV2,
         context: Context,
@@ -33,13 +38,18 @@ const custodian = (cb: CustodianAPIGatewayProxyCallback): APIGatewayProxyHandler
             if (!(r instanceof ResponseObject)) {
                 r = response(200, r);
             }
-            return r.send();
+            return (await runMiddleware(r as ResponseObject, options?.middleware || defaultMiddleware)).send();
         } catch (err) {
             let statusCode = 500;
             if (err.isCustodianError) {
                 statusCode = err.statusCode;
             }
-            return response(statusCode, { message: err.message }).send();
+            return (
+                await runMiddleware(
+                    response(statusCode, { message: err.message }),
+                    options?.middleware || defaultMiddleware
+                )
+            ).send();
         }
     };
 };
@@ -47,6 +57,7 @@ const custodian = (cb: CustodianAPIGatewayProxyCallback): APIGatewayProxyHandler
 export {
     custodian,
     response,
+    defaultMiddleware,
     ResponseObject,
     BaseError,
     BadRequestError,
