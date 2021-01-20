@@ -57,6 +57,7 @@ const custodian = (cb: CustodianAPIGatewayProxyCallback, options: CustodianOptio
 export {
     custodian,
     response,
+    defaultMiddleware,
     ResponseObject,
     BaseError,
     BadRequestError,
