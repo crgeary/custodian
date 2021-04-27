@@ -15,7 +15,7 @@
     "devDependencies": {
         "@crgeary/configuration-prettier": "1.0.3",
         "@types/aws-lambda": "8.10.76",
-        "@types/jest": "26.0.20",
+        "@types/jest": "26.0.23",
         "@types/node": "14.14.43",
         "@typescript-eslint/eslint-plugin": "4.13.0",
         "@typescript-eslint/parser": "4.13.0",
